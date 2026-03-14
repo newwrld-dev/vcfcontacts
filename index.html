@@ -3,241 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POPKID VCF Project</title>
+    <title>POPKID VCF | Global Edition</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.1);
-            --ios-blue: #0A84FF;
-            --ios-red: #FF453A;
-            --ios-green: #34C759;
-            --bg: #000000;
+            --ios-blue: #007AFF;
+            --glass: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.15);
+            --accent: #5856D6;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica;
-            background: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            background: #000;
+            background-image: radial-gradient(circle at 20% 30%, #1a1a2e 0%, transparent 70%),
+                              radial-gradient(circle at 80% 70%, #0d0d1a 0%, transparent 70%);
             color: white;
-            margin: 0;
             display: flex;
             justify-content: center;
+            align-items: center;
             min-height: 100vh;
             padding: 20px;
         }
-        .container {
+
+        .card {
             background: var(--glass);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 35px;
-            padding: 35px 20px;
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 40px 25px;
             width: 100%;
-            max-width: 400px;
-            height: fit-content;
+            max-width: 420px;
             text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
         }
-        h1 { font-weight: 700; font-size: 28px; margin-bottom: 5px; letter-spacing: -0.5px; }
-        p.sub { color: #8E8E93; font-size: 14px; margin-bottom: 25px; }
-        
-        /* Progress Bar */
-        .progress-container {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 20px;
-            margin-bottom: 25px;
+
+        h1 { font-size: 34px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 8px; }
+        .sub { color: #8E8E93; font-size: 14px; margin-bottom: 25px; }
+
+        /* Progress Section */
+        .progress-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 25px;
+            margin-bottom: 30px;
         }
-        .bar-bg { background: rgba(255, 255, 255, 0.1); height: 10px; border-radius: 5px; overflow: hidden; margin: 10px 0; }
-        #progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #0A84FF, #5856D6); transition: width 1.5s ease; }
+        .bar-outer { background: #1c1c1e; height: 12px; border-radius: 10px; overflow: hidden; margin: 12px 0; }
+        #progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--ios-blue), var(--accent)); transition: width 2s cubic-bezier(0.19, 1, 0.22, 1); }
+
+        /* Input Styling */
+        .input-wrap { margin-bottom: 18px; text-align: left; }
+        label { display: block; font-size: 12px; color: #8E8E93; margin-left: 15px; margin-bottom: 8px; font-weight: 600; text-transform: uppercase; }
         
-        /* Inputs */
         input {
             width: 100%;
-            padding: 16px;
-            margin: 10px 0;
-            border-radius: 14px;
-            border: none;
-            background: rgba(255, 255, 255, 0.08);
+            padding: 18px 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: rgba(0,0,0,0.3);
             color: white;
-            box-sizing: border-box;
-            outline: none;
             font-size: 16px;
+            outline: none;
+            transition: 0.3s;
         }
-        .iti { width: 100%; text-align: left; }
-        
+        input:focus { border-color: var(--ios-blue); box-shadow: 0 0 15px rgba(0,122,255,0.2); }
+
+        /* --- STYLISH COUNTRY DROPDOWN CUSTOMIZATION --- */
+        .iti { width: 100%; }
+        .iti__country-list {
+            background: rgba(28, 28, 30, 0.95) !important;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border) !important;
+            border-radius: 20px !important;
+            padding: 10px !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6) !important;
+            width: 320px !important;
+            margin-top: 10px !important;
+        }
+        .iti__country { padding: 12px 15px !important; border-radius: 12px !important; transition: 0.2s; }
+        .iti__country:hover { background: rgba(255,255,255,0.1) !important; }
+        .iti__country-name { font-size: 15px !important; font-weight: 500 !important; }
+        .iti__flag-box { margin-right: 15px !important; transform: scale(1.2); }
+        .iti__dial-code { color: #8E8E93 !important; font-weight: 400 !important; }
+
         /* Buttons */
-        .btn { padding: 16px; border-radius: 16px; border: none; width: 100%; font-weight: 600; cursor: pointer; margin-top: 15px; font-size: 16px; transition: 0.2s; }
-        .btn-blue { background: var(--ios-blue); color: white; }
-        .btn-blue:active { transform: scale(0.98); opacity: 0.9; }
-        .btn-red { background: var(--ios-red); color: white; }
+        .btn-join {
+            width: 100%;
+            padding: 20px;
+            border-radius: 22px;
+            border: none;
+            background: #fff;
+            color: #000;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .btn-join:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
+        
+        .footer { margin-top: 40px; opacity: 0.6; font-size: 13px; }
+        .footer a { color: var(--ios-blue); text-decoration: none; margin: 0 10px; }
 
-        /* Socials */
-        .social-box { margin-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; }
-        .social-box a { color: var(--ios-blue); text-decoration: none; font-size: 14px; display: block; margin: 12px 0; font-weight: 500; }
-
-        /* Admin Table */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
-        th { text-align: left; color: #8E8E93; padding-bottom: 10px; }
-        td { padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<div id="user-view" class="container">
-    <h1>VCF Project</h1>
-    <p class="sub">By Popkid from Kenya</p>
+    <div id="user-view" class="card">
+        <h1>Popkid VCF</h1>
+        <p class="sub">The Ultimate Networking Protocol</p>
 
-    <div class="progress-container">
-        <div class="bar-bg"><div id="progress-bar"></div></div>
-        <small id="stats" style="color: var(--ios-blue);">Loading list status...</small>
+        <div class="progress-card">
+            <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                <span id="stats-text">Initializing list...</span>
+                <span style="color: var(--ios-blue);" id="percent">0%</span>
+            </div>
+            <div class="bar-outer"><div id="progress-bar"></div></div>
+        </div>
+
+        <div class="input-wrap">
+            <label>Identification</label>
+            <input type="text" id="userName" placeholder="Enter Full Name" autocomplete="off">
+        </div>
+
+        <div class="input-wrap">
+            <label>Select Country & Number</label>
+            <input type="tel" id="userPhone">
+        </div>
+
+        <button class="btn-join" id="regBtn">
+            <i class="fas fa-plus-circle"></i> Join Project
+        </button>
+
+        <div class="footer">
+            <a href="https://whatsapp.com/channel/0029Vb70ySJHbFV91PNKuL3T">Official Channel</a>
+            <a href="https://chat.whatsapp.com/KkmgIqh7LCc3eNIW2bUJgP">Join Group</a>
+        </div>
     </div>
 
-    <input type="text" id="userName" placeholder="Enter Full Name">
-    <input type="tel" id="userPhone">
-    <button class="btn btn-blue" id="regBtn">Add Me to VCF</button>
-
-    <div class="social-box">
-        <a href="https://whatsapp.com/channel/0029Vb70ySJHbFV91PNKuL3T">Follow Official Channel</a>
-        <a href="https://chat.whatsapp.com/KkmgIqh7LCc3eNIW2bUJgP">Join WhatsApp Group</a>
+    <div id="admin-login" class="card hidden">
+        <h2>Admin Gateway</h2>
+        <input type="email" id="admEmail" placeholder="Email" style="margin-top: 20px;">
+        <input type="password" id="admPass" placeholder="Password">
+        <button class="btn-join" id="loginBtn">Authorize Access</button>
     </div>
-</div>
 
-<div id="admin-login" class="container hidden">
-    <h2>Admin Login</h2>
-    <input type="email" id="admEmail" placeholder="iantaracha@gmail.com">
-    <input type="password" id="admPass" placeholder="Password">
-    <button class="btn btn-blue" id="loginBtn">Unlock Dashboard</button>
-</div>
-
-<div id="admin-dash" class="container hidden" style="max-width: 600px;">
-    <h2>Dashboard</h2>
-    <div style="display: flex; gap: 10px;">
-        <button class="btn btn-blue" id="vcfBtn">📥 Download VCF</button>
-        <button class="btn btn-red" id="resetBtn">⚠️ Reset All</button>
+    <div id="admin-panel" class="card hidden" style="max-width: 550px;">
+        <h2>Management</h2>
+        <div style="display:flex; gap:10px; margin: 20px 0;">
+            <button class="btn-join" id="vcfBtn" style="background:var(--ios-blue); color:white;">Export VCF</button>
+            <button class="btn-join" id="resetBtn" style="background:var(--ios-red); color:white;">Clear List</button>
+        </div>
+        <div style="text-align: left; max-height: 400px; overflow-y: auto;">
+            <table style="width:100%; border-collapse: collapse;">
+                <tbody id="contact-list"></tbody>
+            </table>
+        </div>
     </div>
-    
-    <table>
-        <thead><tr><th>Name</th><th>Phone</th><th>Action</th></tr></thead>
-        <tbody id="contact-list"></tbody>
-    </table>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where, getCountFromServer, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, where, getCountFromServer, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyBp63fNtZKWKp9eG6lmVDORPYAqBxf3tfU",
-        authDomain: "popkidvcf.firebaseapp.com",
-        projectId: "popkidvcf",
-        storageBucket: "popkidvcf.firebasestorage.app",
-        messagingSenderId: "189477180127",
-        appId: "1:189477180127:web:474daf37c233c61ec78f6a"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyBp63fNtZKWKp9eG6lmVDORPYAqBxf3tfU",
+            authDomain: "popkidvcf.firebaseapp.com",
+            projectId: "popkidvcf",
+            storageBucket: "popkidvcf.firebasestorage.app",
+            messagingSenderId: "189477180127",
+            appId: "1:189477180127:web:474daf37c233c61ec78f6a"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
 
-    // Initial Country Picker
-    const phoneInput = window.intlTelInput(document.querySelector("#userPhone"), {
-        initialCountry: "ke",
-        separateDialCode: true,
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
-
-    // Toggle Admin Mode via URL (?admin=true)
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('admin')) {
-        document.getElementById('user-view').classList.add('hidden');
-        document.getElementById('admin-login').classList.remove('hidden');
-    }
-
-    // Live Progress Update
-    async function updateStats() {
-        const snapshot = await getCountFromServer(collection(db, "contacts"));
-        const count = snapshot.data().count;
-        const goal = 1000; // You can change this goal
-        document.getElementById('progress-bar').style.width = Math.min((count/goal*100), 100) + "%";
-        document.getElementById('stats').innerText = `${count} / ${goal} Contacts Successfully Added`;
-    }
-    updateStats();
-
-    // Register User
-    document.getElementById('regBtn').addEventListener('click', async () => {
-        const name = document.getElementById('userName').value;
-        const phone = phoneInput.getNumber();
-        if(!name || !phone) return alert("Please enter both Name and Number");
-
-        // Duplicate Check
-        const q = query(collection(db, "contacts"), where("phone", "==", phone));
-        const check = await getDocs(q);
-        if(!check.empty) return alert("Error: This number is already in the VCF list!");
-
-        await addDoc(collection(db, "contacts"), { name, phone, timestamp: new Date() });
-        alert("✅ Successfully added to the VCF!");
-        location.reload();
-    });
-
-    // Admin Login Logic
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-        const email = document.getElementById('admEmail').value;
-        const pass = document.getElementById('admPass').value;
-        try {
-            await signInWithEmailAndPassword(auth, email, pass);
-            document.getElementById('admin-login').classList.add('hidden');
-            document.getElementById('admin-dash').classList.remove('hidden');
-            loadAdminData();
-        } catch (e) { alert("Invalid Credentials"); }
-    });
-
-    async function loadAdminData() {
-        const snap = await getDocs(collection(db, "contacts"));
-        const list = document.getElementById('contact-list');
-        list.innerHTML = "";
-        snap.forEach(d => {
-            const row = `<tr>
-                <td>${d.data().name}</td>
-                <td>${d.data().phone}</td>
-                <td><button onclick="window.delContact('${d.id}')" style="color:var(--ios-red); background:none; border:none; cursor:pointer;">Delete</button></td>
-            </tr>`;
-            list.innerHTML += row;
+        // STYLISH PHONE INPUT SETUP
+        const phoneInput = window.intlTelInput(document.querySelector("#userPhone"), {
+            initialCountry: "ke",
+            separateDialCode: true,
+            allowDropdown: true,
+            formatOnDisplay: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
-    }
 
-    // Global delete for window
-    window.delContact = async (id) => {
-        if(confirm("Permanently delete this contact?")) {
-            await deleteDoc(doc(db, "contacts", id));
-            loadAdminData();
+        // Toggle Admin Interface
+        if (new URLSearchParams(window.location.search).has('admin')) {
+            document.getElementById('user-view').classList.add('hidden');
+            document.getElementById('admin-login').classList.remove('hidden');
         }
-    };
 
-    // Export VCF File
-    document.getElementById('vcfBtn').addEventListener('click', async () => {
-        const snap = await getDocs(collection(db, "contacts"));
-        let vcf = "";
-        snap.forEach(d => {
-            vcf += `BEGIN:VCARD\nVERSION:3.0\nFN:${d.data().name}\nTEL;TYPE=CELL:${d.data().phone}\nEND:VCARD\n`;
+        // Live Progress Logic
+        async function updateProgress() {
+            const count = (await getCountFromServer(collection(db, "contacts"))).data().count;
+            const goal = 1000;
+            const perc = Math.min((count/goal*100), 100);
+            document.getElementById('progress-bar').style.width = perc + "%";
+            document.getElementById('percent').innerText = Math.round(perc) + "%";
+            document.getElementById('stats-text').innerText = `${count} / ${goal} Registered`;
+        }
+        updateProgress();
+
+        // Register User
+        document.getElementById('regBtn').addEventListener('click', async () => {
+            const name = document.getElementById('userName').value.trim();
+            const phone = phoneInput.getNumber();
+            
+            if(!name || !phone) return alert("⚠️ Enter details first!");
+            if(!phoneInput.isValidNumber()) return alert("❌ Please enter a valid phone number!");
+
+            const check = await getDocs(query(collection(db, "contacts"), where("phone", "==", phone)));
+            if(!check.empty) return alert("❌ You are already registered in this project!");
+
+            await addDoc(collection(db, "contacts"), { name, phone, time: new Date() });
+            alert("✅ Successfully Added to VCF!");
+            location.reload();
         });
-        const blob = new Blob([vcf], {type: "text/vcf"});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = "Popkid_Project_Contacts.vcf";
-        a.click();
-    });
 
-    // Reset Project
-    document.getElementById('resetBtn').addEventListener('click', async () => {
-        if(confirm("WARNING: This will delete ALL contacts to start a new project. Continue?")) {
+        // Admin Auth
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            try {
+                await signInWithEmailAndPassword(auth, document.getElementById('admEmail').value, document.getElementById('admPass').value);
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                loadContacts();
+            } catch (e) { alert("Access Denied"); }
+        });
+
+        async function loadContacts() {
             const snap = await getDocs(collection(db, "contacts"));
-            for (const d of snap.docs) { await deleteDoc(doc(db, "contacts", d.id)); }
-            alert("Project Cleared!");
-            loadAdminData();
+            const tbody = document.getElementById('contact-list');
+            tbody.innerHTML = "";
+            snap.forEach(d => {
+                tbody.innerHTML += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <td style="padding:15px 0;">${d.data().name}<br><small style="color:#8E8E93;">${d.data().phone}</small></td>
+                    <td style="text-align:right;"><i class="fas fa-trash-alt" style="color:var(--ios-red); cursor:pointer;" onclick="window.del('${d.id}')"></i></td>
+                </tr>`;
+            });
         }
-    });
-</script>
+
+        window.del = async (id) => { if(confirm("Remove contact?")) { await deleteDoc(doc(db,"contacts",id)); loadContacts(); } };
+
+        document.getElementById('vcfBtn').addEventListener('click', async () => {
+            const snap = await getDocs(collection(db, "contacts"));
+            let vcf = "";
+            snap.forEach(d => vcf += `BEGIN:VCARD\nVERSION:3.0\nFN:${d.data().name}\nTEL:${d.data().phone}\nEND:VCARD\n`);
+            const blob = new Blob([vcf], {type: "text/vcf"});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = "Popkid_Project.vcf"; a.click();
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', async () => {
+            if(confirm("DANGER: This will wipe the current project. Continue?")) {
+                const snap = await getDocs(collection(db, "contacts"));
+                snap.forEach(async d => await deleteDoc(doc(db, "contacts", d.id)));
+                alert("Database Wiped!"); loadContacts();
+            }
+        });
+    </script>
 </body>
 </html>
