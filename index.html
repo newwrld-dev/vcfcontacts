@@ -41,17 +41,17 @@
             max-width: 420px;
             text-align: center;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            position: relative;
+            z-index: 10;
         }
 
         h1 { font-size: 32px; font-weight: 800; margin-bottom: 5px; letter-spacing: -1px; }
         .sub { color: #8E8E93; font-size: 14px; margin-bottom: 25px; }
 
-        /* Progress UI */
         .progress-box { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 25px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05); }
         .bar-bg { background: #1c1c1e; height: 10px; border-radius: 5px; overflow: hidden; margin-top: 10px; }
         #progress-bar { width: 0%; height: 100%; background: var(--ios-blue); transition: width 2s ease; }
 
-        /* Inputs */
         input {
             width: 100%;
             padding: 18px;
@@ -68,7 +68,6 @@
         .iti { width: 100%; text-align: left; margin-bottom: 15px; }
         .iti__country-list { background: #1c1c1e; color: white; border: 1px solid var(--border); border-radius: 15px; width: 300px; }
 
-        /* Button */
         .btn-main {
             width: 100%;
             padding: 20px;
@@ -96,6 +95,8 @@
     </style>
 </head>
 <body>
+
+    <canvas id="confetti-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:999;"></canvas>
 
     <div id="user-view" class="card">
         <h1>Popkid VCF</h1>
@@ -141,6 +142,8 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, query, where, getCountFromServer, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -155,25 +158,21 @@
             appId: "1:189477180127:web:474daf37c233c61ec78f6a"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // Setup Phone Input
         const phoneInput = window.intlTelInput(document.querySelector("#userPhone"), {
             initialCountry: "ke",
             separateDialCode: true,
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
 
-        // Show Admin if URL has ?admin
         if (new URLSearchParams(window.location.search).has('admin')) {
             document.getElementById('user-view').classList.add('hidden');
             document.getElementById('admin-login').classList.remove('hidden');
         }
 
-        // Live Progress Update
         async function updateProgress() {
             try {
                 const snap = await getCountFromServer(collection(db, "contacts"));
@@ -187,7 +186,7 @@
         }
         updateProgress();
 
-        // THE BUTTON FIX: Registration
+        // 🎉 Registration Function
         document.getElementById('regBtn').addEventListener('click', async function() {
             const name = document.getElementById('userName').value.trim();
             const phone = phoneInput.getNumber();
@@ -196,10 +195,9 @@
             if(!name || !phone) return alert("⚠️ Please enter Name and Number");
             
             btn.disabled = true;
-            btn.innerText = "Securing Contact...";
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Securing...';
 
             try {
-                // Check if exists
                 const q = query(collection(db, "contacts"), where("phone", "==", phone));
                 const check = await getDocs(q);
                 if(!check.empty) {
@@ -209,10 +207,29 @@
                     return;
                 }
 
-                // Add to DB
                 await addDoc(collection(db, "contacts"), { name, phone, date: new Date() });
-                alert("✅ Success! You have been added to the VCF.");
-                location.reload();
+                
+                // 🔊 PLAY SUCCESS SOUND
+                const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
+                audio.play();
+
+                // ✨ SHINY PARTICLES
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#007AFF', '#ffffff', '#5856D6']
+                });
+
+                // Success Message
+                btn.innerHTML = "🎉 Registered!";
+                btn.style.background = "#34C759";
+                btn.style.color = "#fff";
+
+                setTimeout(() => {
+                    alert("🎊 CONGRATULATIONS! 🎊\nYou have been successfully added to Popkid VCF!");
+                    location.reload();
+                }, 1000);
 
             } catch (e) {
                 alert("Database Error: " + e.message);
@@ -221,7 +238,7 @@
             }
         });
 
-        // Admin Auth
+        // Admin Auth & Functions
         document.getElementById('loginBtn').addEventListener('click', async () => {
             try {
                 await signInWithEmailAndPassword(auth, document.getElementById('admEmail').value, document.getElementById('admPass').value);
