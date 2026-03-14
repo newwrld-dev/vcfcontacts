@@ -13,6 +13,7 @@
             --ios-blue: #007AFF;
             --glass: rgba(255, 255, 255, 0.08);
             --border: rgba(255, 255, 255, 0.15);
+            --whatsapp-green: #25D366;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -86,8 +87,34 @@
         }
         .btn-main:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .footer { margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px; }
-        .footer a { color: var(--ios-blue); text-decoration: none; font-size: 13px; margin: 0 10px; }
+        /* FOOTER BUTTONS LAYOUT */
+        .footer { 
+            margin-top: 30px; 
+            border-top: 1px solid var(--border); 
+            padding-top: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .footer-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            padding: 12px 5px;
+            border-radius: 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s;
+        }
+
+        .footer-btn i { font-size: 18px; color: var(--ios-blue); }
+        .footer-btn:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
 
         .hidden { display: none; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left; }
@@ -118,8 +145,14 @@
         </button>
 
         <div class="footer">
-            <a href="https://whatsapp.com/channel/0029Vb70ySJHbFV91PNKuL3T">Official Channel</a>
-            <a href="https://chat.whatsapp.com/KkmgIqh7LCc3eNIW2bUJgP">Join Group</a>
+            <a class="footer-btn" href="https://whatsapp.com/channel/0029Vb70ySJHbFV91PNKuL3T" target="_blank">
+                <i class="fa-solid fa-bullhorn"></i>
+                <span>Official Channel</span>
+            </a>
+            <a class="footer-btn" href="https://chat.whatsapp.com/KkmgIqh7LCc3eNIW2bUJgP" target="_blank">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>Join Group</span>
+            </a>
         </div>
     </div>
 
@@ -186,7 +219,6 @@
         }
         updateProgress();
 
-        // 🎉 Registration Function
         document.getElementById('regBtn').addEventListener('click', async function() {
             const name = document.getElementById('userName').value.trim();
             const phone = phoneInput.getNumber();
@@ -209,11 +241,9 @@
 
                 await addDoc(collection(db, "contacts"), { name, phone, date: new Date() });
                 
-                // 🔊 PLAY SUCCESS SOUND
                 const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
                 audio.play();
 
-                // ✨ SHINY PARTICLES
                 confetti({
                     particleCount: 150,
                     spread: 70,
@@ -221,7 +251,6 @@
                     colors: ['#007AFF', '#ffffff', '#5856D6']
                 });
 
-                // Success Message
                 btn.innerHTML = "🎉 Registered!";
                 btn.style.background = "#34C759";
                 btn.style.color = "#fff";
@@ -238,7 +267,6 @@
             }
         });
 
-        // Admin Auth & Functions
         document.getElementById('loginBtn').addEventListener('click', async () => {
             try {
                 await signInWithEmailAndPassword(auth, document.getElementById('admEmail').value, document.getElementById('admPass').value);
