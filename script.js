@@ -33,7 +33,7 @@ async function updateProgress() {
     try {
         const snap = await getCountFromServer(collection(db, "contacts"));
         const count = snap.data().count;
-        const goal = 1000;
+        const goal = 500;
         const perc = Math.min((count/goal*100), 100);
         document.getElementById('progress-bar').style.width = perc + "%";
         document.getElementById('percent-text').innerText = Math.round(perc) + "%";
